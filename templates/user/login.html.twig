@@ -42,13 +42,19 @@
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}" />
 
-        <button class="buttonComment" type="submit">
-            Me connecter
-        </button>
+            <button class="buttonComment" type="submit">
+                Me connecter
+            </button>
 
-        <a href="{{ path('connect_google') }}" class="btn btn-google">S'inscrire avec Google</a>
-        <a href="{{ path('connect_discord') }}" class="btn btn-discord">S'inscrire avec Discord</a>
-        <a href="{{ path('connect_facebook') }}" class="btn btn-facebook">S'inscrire avec Facebook</a>
-    </form>
-</section>
+            <a href="{{ path('app_forgot_password_request') }}" class="btn btn-link">
+                Mot de passe oublié ?
+            </a>
+
+            <div class="mt-3">
+                <a href="{{ path('connect_google') }}" class="btn btn-google">S'inscrire avec Google</a>
+                <a href="{{ path('connect_discord') }}" class="btn btn-discord">S'inscrire avec Discord</a>
+                <a href="{{ path('connect_facebook') }}" class="btn btn-facebook">S'inscrire avec Facebook</a>
+            </div>
+        </form>
+    </section>
 {% endblock %}

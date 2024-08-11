@@ -47,6 +47,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $avatar = null;
 
+    #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $tokenExpirationDate = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -150,6 +156,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $comment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getTokenExpirationDate(): ?\DateTimeInterface
+    {
+        return $this->tokenExpirationDate;
+    }
+
+    public function setTokenExpirationDate(?\DateTimeInterface $tokenExpirationDate): self
+    {
+        $this->tokenExpirationDate = $tokenExpirationDate;
 
         return $this;
     }
