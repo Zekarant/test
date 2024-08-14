@@ -14,7 +14,7 @@ final class Version20240811144258 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout des champs pour le reset token et le token avec sa date d\'expiration';
     }
 
     public function up(Schema $schema): void
