@@ -7,6 +7,7 @@ use App\Form\ResetPasswordRequestFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -39,14 +40,46 @@ class ResetPasswordController extends AbstractController
 
                 // Envoyer l'email avec le lien de réinitialisation
                 $resetPasswordUrl = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                // Créer le contenu HTML de l'e-mail
+                $htmlContent = '
+                <div style="width: 100%; font-family: \'Poppins\', sans-serif; border: 1px solid #14141C; font-weight: bold; background-color: #14141C; color: #FAFAFA;">
+                    <div style="text-align: center; text-transform: uppercase; font-size: 1.5em; padding: 20px; border-bottom: 1px solid #FF33F1;">
+                        Réinitialiser mon mot de passe - Mangas\'Fan
+                    </div>
+                    <div style="padding: 20px;">
+                        <p>Bonjour ' . htmlspecialchars($user->getUsername(), ENT_QUOTES, 'UTF-8') . ',</p>
+                        <p>Vous venez de faire une demande de réinitialisation de mot de passe sur le site. Vous avez la possibilité de le changer à l\'aide du lien ci-dessous.</p>
+                        <p>Attention, le lien n\'est valable que <u>30 minutes</u>. Passé ce délai, vous devrez reformuler une nouvelle demande.</p>
+                        <p>Pour changer votre mot de passe correctement, veuillez respecter les points suivants :</p>
+                        <ul>
+                            <li>8 caractères minimum</li>
+                            <li>Un caractère minuscule</li>
+                            <li>Un caractère majuscule</li>
+                            <li>Un chiffre</li>
+                        </ul>
+                        <p>Si vous rencontrez des difficultés lors de votre changement de mot de passe, n\'hésitez pas à contacter l\'équipe à l\'adresse suivante : <a href="mailto:contact@mangasfan.fr" style="color: #FF33F1;">contact@mangasfan.fr</a>.</p>
+                        <div style="width: 70%; margin: auto; text-align: center;">
+                            <a href="' . htmlspecialchars($resetPasswordUrl, ENT_QUOTES, 'UTF-8') . '" style="display: inline-block; border-radius: 20px; border: 1px solid #FF33F1; padding: 10px 20px; color: #FAFAFA; text-decoration: none; background-color: #FF33F1; font-weight: bold;">
+                                Cliquer ici pour réinitialiser votre mot de passe
+                            </a>
+                        </div>
+                        <p style="font-size: 0.9em; padding-top: 10px">Si le bouton ne marche pas, accéder à la réinitialiser de votre mot de passe via ce lien : <a href="' . htmlspecialchars($resetPasswordUrl, ENT_QUOTES, 'UTF-8') . '" style="color: #FF33F1;">' . htmlspecialchars($resetPasswordUrl, ENT_QUOTES, 'UTF-8') . '</a></p>
+                    </div>
+                    <div style="background-color: #1C1C28; padding: 20px; text-align: center;">
+                        © Mangas\'Fan ~ ' . date('Y') . ' ~ Developped by Zekarant, Nico and Sora
+                    </div>
+                </div>';
+                // Créer le message e-mail
                 $emailMessage = (new Email())
-                    ->from('support@mangasfan.fr')
+                    ->from(new Address('support@mangasfan.fr', 'Support de Mangas\'Fan'))
                     ->to($email)
                     ->subject('Réinitialisation de votre mot de passe - ' . $user->getUsername())
-                    ->html('<p>Cliquez sur ce lien pour réinitialiser votre mot de passe : <a href="' . $resetPasswordUrl . '">Réinitialiser
-        le mot de passe</a></p>');
+                    ->html($htmlContent);
 
+                // Envoyer l'e-mail
                 $mailer->send($emailMessage);
+
 
                 $this->addFlash('success', 'Un email de réinitialisation de mot de passe a été envoyé.');
                 return $this->redirectToRoute('app_home');
