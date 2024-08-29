@@ -1,17 +1,94 @@
-# Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
-
 twig:
     form_themes:
-        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+        - "@FOSCKEditor/Form/ckeditor_widget.html.twig"
 fos_ck_editor:
+    default_config: main_config
+    base_path: "build/fosckeditor"
+    js_path: "build/fosckeditor/ckeditor.js"
     configs:
         main_config:
-            toolbar: full
+            toolbar: my_full
+            versionCheck: false
+            extraAllowedContent: "p{*}(*);select{*}(*);option{*}(*);a{*}(*)"
+            htmlEncodeOutput: false
+            entities: false
             language: fr
-            height: '500px'
+            height: "800px"
             filebrowserImageBrowseRouteParameters:
-                provider: 'image'
+                provider: "image"
                 restrict:
                     uploadTypes:
-                        - 'image/*'
+                        - "image/*"
                     uploadSize: 5
+    toolbars:
+        configs:
+            my_full:
+                [
+                    "@document",
+                    "@clipboard",
+                    "@editing",
+                    "@tools",
+                    "@styles",
+                    "@full.forms",
+                    "/",
+                    "@colors",
+                    "@basicstyles",
+                    "@paragraph",
+                    "@links",
+                    "@insert",
+                    "/",
+                ]
+        items:
+            document: ["Source", "-"]
+            clipboard:
+                [
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    "PasteFromWord",
+                    "-",
+                    "Undo",
+                    "Redo",
+                ]
+            editing: ["Find", "Replace", "-", "SelectAll"]
+            basicstyles:
+                [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "Strike",
+                    "Subscript",
+                    "Superscript",
+                    "-",
+                    "CopyFormatting",
+                    "RemoveFormat",
+                ]
+            paragraph:
+                [
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                    "-",
+                ]
+            links: ["Link", "Unlink", "Anchor"]
+            insert:
+                [
+                    "Image",
+                    "Table",
+                    "HorizontalRule",
+                    "Smiley",
+                    "SpecialChar",
+                    "Iframe",
+                ]
+            styles: ["Styles", "Format", "FontSize"]
+            colors: ["TextColor", "BGColor"]
+            tools: ["Maximize", "ShowBlocks"]
