@@ -1,5 +1,4 @@
-@import '../imports';
-
+@import "../imports";
 
 /* Bannière du site */
 header {
@@ -35,7 +34,7 @@ header {
     max-lg:ml-auto
     md:absolute md:right-0 md:top-0;
 
-    background-image: url('https://www.mangasfan.fr/v8/images/circle.png');
+    background-image: url("../../images/circle.png");
     background-position: left 50px top;
 
     img {
@@ -44,11 +43,11 @@ header {
   }
 
   @include defaultConfigurationBannerSize(55svh, 50svh);
-  @include configurationBannerSize('lg', 65svh, 60svh) {
+  @include configurationBannerSize("lg", 65svh, 60svh) {
     @apply text-4xl;
   }
 
-  @include configurationBannerSize('xl', 85svh, 80svh) {
+  @include configurationBannerSize("xl", 85svh, 80svh) {
     @apply text-6xl;
   }
 }
